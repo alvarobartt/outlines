@@ -188,6 +188,11 @@ from pydantic import BaseModel, constr
 import outlines.models as models
 import outlines.text.generate as generate
 
+import torch
+rng = torch.Generator()
+# optional: use this seed to get the same results
+rng.manual_seed(67280421310721)
+
 
 class Weapon(str, Enum):
     sword = "sword"
@@ -213,7 +218,7 @@ class Character(BaseModel):
 
 
 model = models.transformers("gpt2")
-sequence = generate.json(model, Character)("Give me a character description")
+sequence = generate.json(model, Character)("Give me a character description", rng=rng) # rng is optional
 print(sequence)
 # {
 #   "name": "ranbelt",
